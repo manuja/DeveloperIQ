@@ -1,0 +1,25 @@
+# deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-rest-hello-world-deploy
+  labels:
+    type: restapi
+spec:
+  selector: 
+    matchLabels:
+      app: flask-rest-hello-world
+  replicas: 4
+  template:
+    metadata:
+      name: flask-rest-hello-world-tmpl
+      labels:
+        app: flask-rest-hello-world
+    spec:
+      containers:
+        - name: flask-rest-hello-world
+          image: flask-rest-hello-world
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
