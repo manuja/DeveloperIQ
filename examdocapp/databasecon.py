@@ -3,7 +3,7 @@ import requests
 from flask import Blueprint
 import pymysql
  
- # code for databse connection
+# code for databse connection
 
 # Set the database credentials
 host = 'localhost'
