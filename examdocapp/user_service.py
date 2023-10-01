@@ -6,14 +6,13 @@ import databasecon
 
 user_api = Blueprint('user_api', __name__)
 
-#Entry point of the microservice
-@user_api.route('/exsistance/<githubuser>', methods=['GET'])
+#check exsistance of usermetrics
 def check_exsistance(githubuser):
 
         # Create a cursor object
         cursor = databasecon.connection.cursor()
         # Execute a SQL query
-        query = """SELECT COUNT(*) FROM (SELECT um.user_id FROM tblusermetrics AS um LEFT JOIN tbluser AS u ON um.user_id=u.id  WHERE u.username=%s) AS tbl"""
+        query = """SELECT COUNT(*) FROM (SELECT um.user_id FROM tblusermetrics AS um LEFT JOIN tbluser AS u ON um.user_id=u.id  WHERE u.gitusername=%s) AS tbl"""
         tuple1 = (githubuser)
         cursor.execute(query, tuple1)
 
@@ -24,7 +23,10 @@ def check_exsistance(githubuser):
         record_count=results[-1][-1]
 
         # Close the cursor and connection
-        cursor.close()
-        databasecon.connection.close()
+        # cursor.close()
+        # databasecon.connection.close()
 
-        return redirect("/exsistance/"+record_count)
+        if record_count>0:
+                return 1
+        else:
+                return 0

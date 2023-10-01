@@ -62,3 +62,28 @@ def authenticate():
     else :
         return redirect("/")
     
+    #Check the validity of the apikey
+def validate_key(gitusername,apikey):
+
+        # Create a cursor object
+        cursor = databasecon.connection.cursor()
+        # Execute a SQL query
+        query = """SELECT COUNT(*) FROM tblauth WHERE userid=(SELECT id FROM tbluser WHERE gitusername=(%s)) AND authkey=(%s)"""
+        tuple1 = (gitusername,apikey)
+        cursor.execute(query, tuple1)
+
+        # Fetch the results
+        results = cursor.fetchall()
+
+        # Print the results
+        record_count=results[-1][-1]
+        if record_count>0:
+            status=1
+        else:
+            status=0
+
+
+        return status
+
+        
+        
