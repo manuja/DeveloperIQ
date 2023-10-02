@@ -30,3 +30,26 @@ def check_exsistance(githubuser):
                 return 1
         else:
                 return 0
+
+
+#check exsistance of usermetrics
+def getuserid(githubuser):
+
+        # Create a cursor object
+        cursor = databasecon.connection.cursor()
+        # Execute a SQL query
+        query = """SELECT id from tbluser WHERE gitusername=(%s)"""
+        tuple1 = (githubuser)
+        cursor.execute(query, tuple1)
+
+        # Fetch the results
+        results = cursor.fetchall()
+
+        # Print the results
+        gituserid=results[-1][-1]
+
+        # Close the cursor and connection
+        # cursor.close()
+        # databasecon.connection.close()
+
+        return gituserid
