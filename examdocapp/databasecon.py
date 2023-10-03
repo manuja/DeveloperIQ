@@ -8,7 +8,7 @@ import pymysql
 # Set the database credentials
 host = 'localhost'
 port = 3306
-user = 'root'
+user = 'myroo'
 password = '19891104UMP'
 database = 'prodtrack'
 

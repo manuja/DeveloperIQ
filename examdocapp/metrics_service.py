@@ -1,4 +1,4 @@
-#user_service.py
+#metrics_service.py
 from flask import Flask, request, redirect
 from flask import Blueprint
 import pymysql
@@ -7,12 +7,14 @@ import auth_service
 import requests
 import user_service
 import urllib.parse
+import datetime
+import random
 
 metrics_api = Blueprint('metrics_api', __name__)
 
 #Entry point of the microservice
-@metrics_api.route('/viewmetrics', methods=['POST'])
-def view_metrics():
+@metrics_api.route('/update_metrics', methods=['POST'])
+def update_metrics():
         print("good")
         gitusername=request.args.get("gitusername")
         apikey=request.args.get("apikey")
@@ -44,21 +46,23 @@ def view_metrics():
             #print(no_of_user_comments[0]['reactions']['hooray'])
 
             #check exsistance of user in metrics table
-            exsist_metrics=user_service.check_exsistance(gitusername)
+            #exsist_metrics=user_service.check_exsistance(gitusername)
             total_imoji_value=total_imoji
 
-            if exsist_metrics==1 :
-                
-                #update the metrics table
-                cursor = databasecon.connection.cursor()
-                create_table_query = '''UPDATE tblusermetrics SET commits=(%s),issues=(%s),other=(%s)  WHERE user_id=(SELECT id FROM tbluser WHERE gitusername=(%s)) ;'''
-                cursor.execute(create_table_query,(no_of_user_commits,no_of_user_issues,total_imoji_value,gitusername))
-                userid=cursor.lastrowid
-                databasecon.connection.commit()
+            now = random. random()
 
-                return f"Searched User: {gitusername} has {no_of_user_commits} of commits, {no_of_user_issues} of issues and {total_imoji_value} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
+            #update the metrics table
+            cursor = databasecon.connection.cursor()
+            update_table_query = '''UPDATE tblusermetrics SET commits=(%s),issues=(%s),other=(%s),record_log_time=(%s)  WHERE user_id=(SELECT id FROM tbluser WHERE gitusername=(%s)) ;'''
+            cursor.execute(update_table_query,(no_of_user_commits,no_of_user_issues,total_imoji_value,now,gitusername))
+            # Check the affected rows count
+            affected_rows = cursor.rowcount
+            databasecon.connection.commit()
 
-            else : 
+            print("gyyyy")
+            print(affected_rows)
+
+            if affected_rows == 0:
                 print("I am here no worries")
                 
                 print(no_of_user_commits)
@@ -72,7 +76,13 @@ def view_metrics():
                 cursorinsert.execute(create_table_query,(gituserid,no_of_user_commits,no_of_user_issues,total_imoji_value))
                 databasecon.connection.commit()
 
-                return f"Searched User: {gitusername} has {no_of_user_commits} of commits, {no_of_user_issues} of issues and {total_imoji_value} of Thubsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
+                return f"Searched User: {gitusername} has {no_of_user_commits} of commits, {no_of_user_issues} of issues and {total_imoji_value} of Thubsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%" 
+            else:
+        
+                return f"Searched User: {gitusername} has {no_of_user_commits} of commits, {no_of_user_issues} of issues and {total_imoji_value} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
+
+
+                
         else:
             
             return redirect("/")

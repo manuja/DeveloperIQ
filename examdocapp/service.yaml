@@ -3,11 +3,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-rest-hello-world-svc
+  name: developeriq-svc
 spec:
   type: LoadBalancer
   selector:
-    app: flask-rest-hello-world
+    app: developeriq
   ports:
     - protocol: "TCP"
       port: 8000

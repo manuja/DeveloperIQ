@@ -3,23 +3,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-rest-hello-world-deploy
+  name: developeriq-deploy
   labels:
     type: restapi
 spec:
   selector: 
     matchLabels:
-      app: flask-rest-hello-world
+      app: developeriq
   replicas: 4
   template:
     metadata:
-      name: flask-rest-hello-world-tmpl
+      name: developeriq-tmpl
       labels:
-        app: flask-rest-hello-world
+        app: developeriq
     spec:
       containers:
-        - name: flask-rest-hello-world
-          image: flask-rest-hello-world
+        - name: developeriq
+          image: developeriq:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 5000

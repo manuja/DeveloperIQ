@@ -13,7 +13,7 @@ def authenticate():
     username = request.args.get('uname')
     password = request.args.get('pword')
     githubuser = request.args.get('gituser')
-    if username=="manuja" and password=="123":
+    if username=="manuja" and password=="Bd#19911225A":
         authkey = uuid.uuid1()
         print("I am here 01")
 
