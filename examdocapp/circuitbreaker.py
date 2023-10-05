@@ -16,7 +16,7 @@ class CircuitBreaker:
             #raise Exception("Simulated failure is")
             user_commits = requests.get(url+gitusername)
             no_of_user_commits=len(user_commits.json()) 
-            return jsonify(no_of_user_commits)
+            return no_of_user_commits
         except Exception as e:
             self.failures += 1
             if self.failures >= self.fail_max:

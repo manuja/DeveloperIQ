@@ -37,17 +37,36 @@ def update_metrics():
             if type(user_commits) == int:
                 no_of_user_commits=user_commits
             else:
-                return "aasa"+user_commits
+                return user_commits
             
             
             #Get no of issues in a project as one metrics
-            user_issues = requests.get('https://api.github.com/repos/manuja/LASMS/issues?assignee='+gitusername+'&state=open')
-            no_of_user_issues=len(user_issues.json()) 
-            print(no_of_user_issues) 
+
+            url_issues = 'https://api.github.com/repos/manuja/LASMS/issues?assignee='
+            user_issues = breaker.execute(gitusername,url_issues)
+
+            if type(user_issues) == int:
+                no_of_user_issues=user_issues
+            else:
+                return user_issues
+
+            # user_issues = requests.get('https://api.github.com/repos/manuja/LASMS/issues?assignee='+gitusername+'&state=open')
+            # no_of_user_issues=len(user_issues.json()) 
+            # print(no_of_user_issues) 
 
             #Get no of imoji icons
-            user_comments = requests.get('https://api.github.com/repos/manuja/LASMS/issues?user='+gitusername)
-            no_of_user_comments=user_comments.json()
+
+            url_imoji = 'https://api.github.com/repos/manuja/LASMS/issues?user='
+            user_imoji = breaker.execute(gitusername,url_imoji)
+
+            if isinstance(user_imoji,list):
+                no_of_user_comments=user_imoji
+            else:
+                return user_imoji
+
+            # user_comments = requests.get('https://api.github.com/repos/manuja/LASMS/issues?user='+gitusername)
+            # no_of_user_comments=user_comments.json()
+
             print('<pre>')
             total_imoji=0
             for x in range(2):
