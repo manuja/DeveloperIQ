@@ -38,11 +38,9 @@ def view_metrics():
             for x in results:
                 print(x[0])
             
+            return f"Searched User: {gitusername} has {x[1]} of commits, {x[2]} of issues and {x[3]} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
 
-
-            #return f"Searched User: {gitusername} has {no_of_user_commits} of commits, {no_of_user_issues} of issues and {total_imoji_value} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
-
-            return "hiiii"
+            
             
         else:
             

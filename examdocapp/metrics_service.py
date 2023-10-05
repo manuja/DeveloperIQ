@@ -9,8 +9,10 @@ import user_service
 import urllib.parse
 import datetime
 import random
+import circuitbreaker
 
 metrics_api = Blueprint('metrics_api', __name__)
+breaker = circuitbreaker.CircuitBreaker()
 
 #Entry point of the microservice
 @metrics_api.route('/update_metrics', methods=['POST'])
@@ -20,15 +22,24 @@ def update_metrics():
         apikey=request.args.get("apikey")
         key_status=auth_service.validate_key(gitusername,apikey)
         print(key_status)
+        
 
         #call github api for metrics if key is valied
         if key_status==1:
 
             #Get total number of commits in a project as one metrics
-            user_commits = requests.get('https://api.github.com/repos/manuja/LASMS/commits?author='+gitusername)
-            no_of_user_commits=len(user_commits.json()) 
-            print(no_of_user_commits) 
+             
+            url='https://api.github.com/repos/manuja/LASMS/commits?author='
 
+            #invoke the circiut breaker
+            user_commits = breaker.execute(gitusername,url)
+
+            if type(user_commits) == int:
+                no_of_user_commits=user_commits
+            else:
+                return "aasa"+user_commits
+            
+            
             #Get no of issues in a project as one metrics
             user_issues = requests.get('https://api.github.com/repos/manuja/LASMS/issues?assignee='+gitusername+'&state=open')
             no_of_user_issues=len(user_issues.json()) 
