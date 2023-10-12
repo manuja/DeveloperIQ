@@ -23,12 +23,7 @@ def get_product(product_id):
     
     # code for cloud connection
 
-#     # Set the database credentials
-#     host = 'testdatabase.civrhzjidjsx.us-east-1.rds.amazonaws.com'
-#     port = 3306
-#     user = 'admin'
-#     password = 'Bd#19891104'
-#     database = 'testdb'
+
 
 #     # Connect to the database
 #     connection = pymysql.connect(

@@ -38,9 +38,13 @@ def view_metrics():
             for x in results:
                 print(x[0])
             
-            return f"Searched User: {gitusername} has {x[1]} of commits, {x[2]} of issues and {x[3]} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored 79%"
-
+            #calculate the weighted average of each user
+            weighted_average= ((x[1]*3)+(x[2]*2)+(x[3]*1)/6)
             
+
+            return f"Searched User Is: {gitusername} has {x[2]} of commits, {x[3]} of issues and {x[4]} of Thumbsup Emoji. Based on the developer productivity calculation, {gitusername} has scored {weighted_average} "
+
+
             
         else:
             

@@ -14,9 +14,14 @@ class CircuitBreaker:
         try:
             # Simulate a failure condition
             #raise Exception("Simulated failure is")
-            user_commits = requests.get(url+gitusername)
-            no_of_user_commits=len(user_commits.json()) 
-            return no_of_user_commits
+            # user_commits = requests.get(url+gitusername)
+            # no_of_user_commits=len(user_commits.json()) 
+            # return no_of_user_commits
+            responce_load=requests.get(url+gitusername)
+            no_of_cases=responce_load.json()
+
+            return no_of_cases
+
         except Exception as e:
             self.failures += 1
             if self.failures >= self.fail_max:
@@ -26,7 +31,7 @@ class CircuitBreaker:
                     self.failures = 0
                     self.last_failure_time = current_time  # Update last failure time
                 else:
-                    return jsonify(error="Circuit is open"), 500
-            return jsonify(error=str(e)), 500
+                    return ("424")
+            return ("500")
 
 
